@@ -9,18 +9,7 @@ struct Node {
 	struct Node* next;
 };
 //insert node at front of list
-void insertFront(struct Node** headRef,int newDataFront) {
-	//allocate new node
-	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-	//scribe new data
-	newNode->data = newDataFront;
-	newNode->prev = NULL;
-	newNode->next = *headRef;
-	//change prev of former first to this node
-	if ((*headRef)->prev != NULL)
-		(*headRef)->prev = newNode;
-	
-}
+void insertFront() {}
 
 //delete node at frontof list
 void deleteFront(){}

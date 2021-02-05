@@ -1,32 +1,28 @@
 #pragma once
-template<typename DLL>
 class DLList
-{
-	struct node {
-		Dll data;   //data for element stored
-		node* prev; //pointer to previous node
-		node* next; //pointerto next node
-	};
-	node* head; //pointer to front of list
-	node* tail; //ponter to back of list
+{	
 public:
+	struct Node {
+		int data;   //data for element stored
+		Node* prev; //pointer to previous node
+		Node* next; //pointerto next node
+	};
 	
-	DLList(); //initilize head and tail to null
-	~DLList();//delete all nodes
+	void initilize();
 
 	//insert node at front of list
 	//delete node at front of list
-	void insertFront(const DLL& val);
+	void insertFront(struct Node** headRef, int newData);
 	void deleteFront();
 
 	//insert node at back of list
 	//delete node at back of list
-	void insertBack(const T& val);
+	void insertBack(struct Node** tailRef, int newData);
 	void deleteBack();
 
 	//insert node at arbitary location of list
 	//delete nose at arbitary location of list
-	void insertMid();
+	void insertMid(struct Node* prevNode, int newData);
 	void deleteMid();
 
 	//return count of nodes in list
@@ -42,5 +38,7 @@ public:
 	//sort the list
 	void sortList();
 private:
+	Node* head;
+	Node* tail;
 };
 

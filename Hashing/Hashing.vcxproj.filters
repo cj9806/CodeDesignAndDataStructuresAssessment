@@ -18,12 +18,12 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TreeNode.cpp">
+    <ClCompile Include="HashFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TreeNode.h">
+    <ClInclude Include="HashFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

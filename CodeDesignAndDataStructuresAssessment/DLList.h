@@ -1,19 +1,51 @@
 #pragma once
+template<typename T>
 class DLList
 {	
 public:
 	struct Node {
-		int data;   //data for element stored
+		T data;   //data for element stored
 		Node* prev; //pointer to previous node
 		Node* next; //pointerto next node
 	};
 	
-	void initilize();
+	//default constructor
+	void DLList();
 
 	//insert node at front of list
 	//delete node at front of list
-	void insertFront(struct Node** headRef, int newData);
-	void deleteFront();
+	void push_front(const T& newData) {
+		if (head != nullptr) {
+			Node* temp = new Node;
+			temp->data = newData;
+			temp->prev = nullptr;
+			temp->next = head;
+
+			head = temp;
+		}
+		else {
+			Node* temp = new Node;
+			temp->data = newData;
+			temp->prev = nullptr;
+			temp->next = nullptr;
+
+			head = temp;
+			tail = temp;
+		}
+	}
+	void pop_front() {
+		Node* temp = head;
+		head = head->next;
+		delete temp;
+		if (head!= nullptr)
+		{
+			head->prev = nullptr;
+		}
+		else {
+			tail = nullptr;
+		}
+		
+	}
 
 	//insert node at back of list
 	//delete node at back of list
@@ -40,5 +72,6 @@ public:
 private:
 	Node* head;
 	Node* tail;
+	int count = 0;
 };
 

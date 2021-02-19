@@ -11,7 +11,7 @@ public:
 	
 	//default constructor
 	//creates node with value of null
-	void DLList()
+	DLList()
 	{
 		Node* temp = new Node;
 		temp->data = NULL;
@@ -20,6 +20,16 @@ public:
 		
 		head = temp;
 		tail = temp;
+	}
+
+	//delete all nodes in list
+	~DLList() {
+		Node* temp = head;
+		while (temp != tail) {
+			temp = temp->next;
+			delete temp->prev;
+		}
+		delete temp;
 	}
 
 	//insert node at front of list
@@ -177,6 +187,28 @@ public:
 		if (head == nullptr || tail == nullptr)
 			return true;
 		else return false;
+	}
+
+	//search for node and returns index of value in list 
+	//returns -1 if value is not present in current list
+	int search(const T& data) {
+		//create temporary node pointing to head
+		Node* temp = head;
+		while(temp != tail)
+		{
+			if (temp->data == data)
+				return i;
+			else 
+				temp = temp->next;
+		}
+		return -1;
+	}
+
+	T& front() {
+		return head->value;
+	}
+	T& back() {
+		return head->value;
 	}
 private:
 	Node* head;

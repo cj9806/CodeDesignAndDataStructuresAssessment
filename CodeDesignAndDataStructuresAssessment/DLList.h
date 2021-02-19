@@ -10,10 +10,19 @@ public:
 	};
 	
 	//default constructor
-	void DLList();
+	//creates node with value of null
+	void DLList()
+	{
+		Node* temp = new Node;
+		temp->data = NULL;
+		temp->next = nullptr;
+		temp->prev = nullptr;
+		
+		head = temp;
+		tail = temp;
+	}
 
 	//insert node at front of list
-	//delete node at front of list
 	void push_front(const T& newData) {
 		if (head != nullptr) {
 			Node* temp = new Node;
@@ -36,6 +45,7 @@ public:
 		}
 		
 	}
+	//delete node at front of list
 	void pop_front() {
 		Node* temp = head;
 		head = head->next;
@@ -52,7 +62,6 @@ public:
 	}
 
 	//insert node at back of list
-	//delete node at back of list
 	void push_back(const T& newData) {
 		if (tail != nullptr) {
 			Node* temp = new Node;
@@ -74,6 +83,7 @@ public:
 			count = 0;
 		}
 	}
+	//delete node at back of list
 	void pop_back() {
 		Node* temp = tail;
 		tail = tail->prev;
@@ -91,7 +101,7 @@ public:
 	//insert node at arbitary location of list
 	//delete nose at arbitary location of list
 
-	//list index will assume size = number of nodes -1 because of index of 0
+	//will add node after given index, assumes index count starts at 0 
 	//will add to tail of list if out of range
 	void push_mid(const T& newData, int listIndex) {
 		if (listIndex > count&& head != nullptr) {
@@ -127,8 +137,8 @@ public:
 			count = 0;
 		}
 	}
-	//assumes you want to delete a node at a certing index with index starting at 0
-	//if indexis  out of range it will pop the tail
+	//assumes you want to delete a node at a certin index with index starting at 0
+	//if index is  out of range it will pop the tail
 	void pop_mid(int listIndex) {
 		if (listIndex > count && head != nullptr)
 		{
@@ -146,7 +156,7 @@ public:
 		else if (head != nullptr)
 		{
 			Node* temp = head;
-			for (int i;i < listIndex;i++;)
+			for (int i=0;i < listIndex;i++;)
 			{
 				temp = temp->next;
 			}
@@ -157,7 +167,7 @@ public:
 		
 	}
 
-	//return count of nodes in list
+	//returns the number of nodes in the list
 	int countNodes() {
 		return count+1;
 	}

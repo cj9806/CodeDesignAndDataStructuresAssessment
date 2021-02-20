@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename T>
-class TreenODE
+class TreeNode
 {
 public:
 	struct Node {
@@ -24,47 +24,59 @@ public:
 		} //const;
 	};
 	//constructor sets root value to null
-	TreenODE() {
-		root = nullptr;
+	TreeNode() {
+		
 	}
-	~TreenODE();
+	~TreeNode() {
+		destroyRecursive(root);
+	};
 
 	//search binary tree for node with specified value
 	//begin at root node
 	// write the found node to the found variable OR write nullptr if none was found
-	//returns true if a node was found
-	//assumes given node is the root of the tree
-	//please only use the root of the tree
-	//not asking, genuinly think it will break the program if it dosn't 
-	bool search(const T& value, Node*& found) {
+	bool search(const T& value) {
 		
-		found = privSearch(value, root);
+		Node* found = privSearch(value, root);
 		//if the value exsists in the tree
-		if (found != nullptr)
+		if (found->data == value)
 			//return true
 			return true;
 		//else 
 		else {
 			//write a nullptr to found
-			found = nullptr;
 			return false;
+			found = nullptr;
 		}
 	}
 
 	//insert node into tree
 	void insert(const T& value) {
 		//search for node
-		Node* temp = privSearch(value, root);
-		//if node exsists
-		if (temp->data == value)
-			//do nothing
-			return;
-		//else node does not exsist
+		if (root != nullptr) {
+			Node* temp = privSearch(value, root);
+			//if root exsists
+			if (root != nullptr) {
+				//if value exsist in tree
+				if (temp->data == value)
+					//do nothing
+					return;
+				//else node does not exsist
+				else {
+					//set value to new node->data
+					temp->data = value;
+
+					//return
+					return;
+				}
+			}
+		}
 		else {
-			//set value to new node->data
-			temp->data == value;
-			//return
-			return;
+			Node* temp = new Node;
+			temp->data = value;
+			temp->parent = nullptr;
+			temp->left = nullptr;
+			temp->right = nullptr;
+			root = temp;
 		}
 	}
 
@@ -72,11 +84,11 @@ public:
 		//search for specified node using given value will be reffered to as target node
 		Node* temp = privSearch(value, root);
 		//if value cannot be found
-		if (temp->data == nullptr)
+		if (temp->data != value)
 			//return that specified node or that it dosnt exsist or do nothing idfk
 			return;
 		//if node has no children
-		if (temp->hasLeft() != true && temp->hasRight() != true) {
+		else if (temp->hasLeft() != true && temp->hasRight() == false) {
 			//set parent nodes pointer to null
 			if (temp->parent->right == temp)
 				temp->parent->right = nullptr;
@@ -87,15 +99,15 @@ public:
 		//if only left child
 		else if (temp->hasLeft() == true && temp->hasRight() == false) {
 			//change targets parent pointer to point to child
-			temp->left->prev = temp->prev;
-			temp->prev->left = temp->left;
+			temp->left->parent = temp->parent;
+			temp->parent->left = temp->left;
 			//delete target node
 			delete temp;
 		}
 		//if only right child
-		else if(temp->hasRight){
-			temp->right->prev = temp->prev;
-			temp->prev->right = temp->right;
+		else if(temp->hasRight() && temp->hasRight() == false){
+			temp->right->parent = temp->parent;
+			temp->parent->right = temp->right;
 
 			delete temp;
 		}
@@ -103,27 +115,29 @@ public:
 		//else if node had 2 children
 		else
 		{
+			//find the value on the tree greater than the one we want to remove
+			Node* toDelete = temp;
 			//step right once
 			temp = temp->right;
-			//step left as many times as possible
+			//step left as many times as possible to get temp to be final node
 			while (temp->hasLeft()) 
 			{
 				temp = temp->left;
 			}
 			//copy value of the final node to target node
-			head = temp;
+			temp->data = toDelete->data;
 			//if final node has a child(should only be able to have one)
 			if (temp->hasRight())
 			{
 				//change final node's parent pointer to point to final nodes child
 				//should only have right
-				temp->parent->left = temp right;
-				temp->right->parent = temp parent;
+				temp->parent->left = temp->right;
+				temp->right->parent = temp->parent;
 			}
 			//else the node has no child to take care of
 			else
 			{
-				temp->parent->left = nullptr;
+				temp->parent->left = toDelete->left;
 			}
 			delete temp;
 		}
@@ -136,42 +150,57 @@ private:
 	//------------------------------------------------------MINOR RESTRUCTURING REQUIRED------------------------------------------------------//
 
 	//searches tree for specified value starting at given node
-	Node* privSearch(const T& value, Node* root){
-		Node* temp = root;
-		//if node is current node
-		if (temp->data == value) {
-			return temp;
+	Node* privSearch(const T& value, Node* node){
+		node;
+			//if node is current node
+		if (node->data == value) {
+			return node;
 		}
 		//current node has children
 		//nod only has left
-		else if (root->hasLeft() && root->hasRight() = false) {
+		else if (node->hasLeft() && value < node->data) {
 			//move to the left node
-			privSearch(value, temp->left);
+			privSearch(value, node->left);
 		}
 		//node only has right child
-		else if (root->hasRight()&& root->hasLeft() = false){
+		else if (node->hasRight() && value > node->data) {
 			//move to the right node
-			privSearch(value, temp->right);
+			privSearch(value, node->right);
 		}
 		//node has 2 children
-		else if (root->hasRight() && root->hasLeft()) {
+		else if (node->hasRight() && node->hasLeft()) {
 			//if value is less than root value
-			if (value < root->data)
+			if (value < node->data)
 				//move left
-				privSearch(value, temp->left);
+				privSearch(value, node->left);
 			//else
 			else
 				//move right
-				privSearch(value, temp->left);
+				privSearch(value, node->left);
 		}
-		//only other possibility is node has no child
-		else
+		//only other possibility is node does not exsist
+		else {
 			//return new null node
-			return nullptr;
-		
-			
-		
+			Node* child = new Node;
+			child->parent = node;
+			child->left = nullptr;
+			child->right = nullptr;
+			if (value > node->data) {
+				node->right = child;
+			}
+			else {
+				node->left = child;
+			}
+			return child;
+		}
 	}
 	//------------------------------------------------------MINOR RESTRUCTURING REQUIRED------------------------------------------------------//
+	void destroyRecursive(Node* boom) {
+		if (boom) {
+			destroyRecursive(boom->left);
+			destroyRecursive(boom->right);
+			delete boom;
+		}
+	}
 };
 

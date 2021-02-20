@@ -130,7 +130,7 @@ public:
 			temp->data = newData;
 			temp->prev = seed;
 			temp->next = seed->next;
-			seed->next->prev = temp;
+			seed->next->parent = temp;
 			seed->next = temp;
 			count++;
 		}
@@ -169,7 +169,7 @@ public:
 			{
 				temp = temp->next;
 			}
-			temp->next->prev = temp->prev;
+			temp->next->parent = temp->prev;
 			temp->prev->next = temp->next;
 			delete temp;
 		}

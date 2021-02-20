@@ -21,5 +21,6 @@ int main()
 	std::cout << testTree.search(1000) << std::endl;
 	//test remove
 	testTree.remove(1000);
+	testTree.remove(30);
 	return 0;
 }

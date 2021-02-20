@@ -13,13 +13,8 @@ public:
 	//creates node with value of null
 	DLList()
 	{
-		Node* temp = new Node;
-		temp->data = NULL;
-		temp->next = nullptr;
-		temp->prev = nullptr;
-		
-		head = temp;
-		tail = temp;
+		head = nullptr;
+		tail = nullptr;
 	}
 
 	//delete all nodes in list
@@ -39,6 +34,7 @@ public:
 			temp->data = newData;
 			temp->prev = nullptr;
 			temp->next = head;
+			head->prev = temp;
 
 			head = temp;
 			count++;
@@ -78,6 +74,7 @@ public:
 			temp->data = newData;
 			temp->next = nullptr;
 			temp->prev = tail;
+			tail->next = temp;
 
 			tail = temp;
 			count++;
@@ -114,6 +111,7 @@ public:
 	//will add node after given index, assumes index count starts at 0 
 	//will add to tail of list if out of range
 	void push_mid(const T& newData, int listIndex) {
+		//INDEX given is out of range
 		if (listIndex > count&& head != nullptr) {
 			Node* temp = new Node;
 			temp->data = newData;
@@ -125,17 +123,18 @@ public:
 		}
 		else if (head != nullptr) {
 			Node* seed = head;
-			for (int i = 0; i < listIndex; i++;) {
+			for (int i = 0; i < listIndex; i++) {
 				seed = seed->next;
 			}
 			Node* temp = new Node;
 			temp->data = newData;
 			temp->prev = seed;
 			temp->next = seed->next;
+			seed->next->prev = temp;
 			seed->next = temp;
-			seed->next->prev = seed;
 			count++;
 		}
+		//if no values in list
 		else {
 			Node* temp = new Node;
 			temp->data = newData;
@@ -166,7 +165,7 @@ public:
 		else if (head != nullptr)
 		{
 			Node* temp = head;
-			for (int i=0;i < listIndex;i++;)
+			for (int i=0;i < listIndex;i++)
 			{
 				temp = temp->next;
 			}
@@ -191,24 +190,26 @@ public:
 
 	//search for node and returns index of value in list 
 	//returns -1 if value is not present in current list
-	int search(const T& data) {
-		//create temporary node pointing to head
-		Node* temp = head;
-		while(temp != tail)
-		{
-			if (temp->data == data)
-				return i;
-			else 
-				temp = temp->next;
-		}
-		return -1;
-	}
+	//jsut relized it neverasked for this
+	//T search(const T& data) {
+	//	//create temporary node pointing to head
+	//	Node* temp = head;
+	//	while(temp != tail)
+	//	{
+	//		if (temp->data == data)
+	//			return temp->data;
+	//		else 
+	//			temp = temp->next;
+	//	}
+	//	return -1;
+	//}
 
-	T& front() {
-		return head->value;
+	T front() {
+		//be sure to call it data not fucking value you idiot
+		return head->data;
 	}
-	T& back() {
-		return head->value;
+	T back() {
+		return tail->data;
 	}
 private:
 	Node* head;

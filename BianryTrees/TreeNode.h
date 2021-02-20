@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename T>
-class tBinaryTree
+class TreenODE
 {
 public:
 	struct Node {
@@ -23,37 +23,29 @@ public:
 			else return false;
 		} //const;
 	};
-
-	tBinaryTree();
-	~tBinaryTree();
+	//constructor sets root value to null
+	TreenODE();
+	~TreenODE();
 
 	//search binary tree for node with specified value
 	//begin at root node
-	//returns new empty node if there is no valid node
-	Node* search(const T& value, Node* root) {
-		Node* temp = root;
-		//if node is current node
-		if (temp->data == value) {
-			return temp;
-		}
-		//current node have children
-		else if (temp->hasLeft() && temp->hasRight) {
-			//if value less than current node & currentnode has left child
-			if (temp->data < value) {
-				//move to the left node
-				search(value, temp->left);
-			}
-			//if value more than current node & currentnode has right child
-			if (temp->data > value) {
-				//move to the right node
-				search(value, temp->right);
-			}
-		}
-		//only other possibility is node has no child
+	// write the found node to the found variable OR write nullptr if none was found
+	//returns true if a node was found
+	//assumes given node is the root of the tree
+	//please only use the root of the tree
+	//not asking, genuinly think it will break the program if it dosn't 
+	bool search(const T& value, Node*& found) {
+		
+		found = privSearch(value, root);
+		//if the value exsists in the tree
+		if (found != nullptr)
+			//return true
+			return true;
+		//else 
 		else {
-			//return new null node
-			Node* temp2 = new Node;
-			temp2->parent = temp;
+			//write a nullptr to found
+			found = nullptr;
+			return false;
 		}
 	}
 
@@ -76,7 +68,7 @@ public:
 
 	void remove(const T& value) {
 		//search for specified node using given value will be reffered to as target node
-		Node* temp = search(value, root);
+		Node* temp = search(value);
 		//if value cannot be found
 		if (temp->data == nullptr)
 			//return that specified node or that it dosnt exsist or do nothing idfk
@@ -99,7 +91,7 @@ public:
 			delete temp;
 		}
 		//if only right child
-		else if(temp->){
+		else if(temp->hasRight){
 			temp->right->prev = temp->prev;
 			temp->prev->right = temp->right;
 
@@ -114,9 +106,6 @@ public:
 			//step left as many times as possible
 			while (temp->hasLeft()) 
 			{
-				if (temp->hasLeft() = false) {
-					break;
-				}
 				temp = temp->left;
 			}
 			//copy value of the final node to target node
@@ -129,6 +118,7 @@ public:
 				temp->parent->left = temp right;
 				temp->right->parent = temp parent;
 			}
+			//else the node has no child to take care of
 			else
 			{
 				temp->parent->left = nullptr;
@@ -140,6 +130,26 @@ public:
 
 
 private:
-	Node *root
+	Node* root;
+	//------------------------------------------------------MINOR RESTRUCTURING REQUIRED------------------------------------------------------//
+
+	//searches tree for specified value starting at given node
+	Node* privSearch(const T& value, Node* root){
+		Node* temp = root;
+		//if node is current node
+		if (temp->data == value) {
+			return temp;
+		}
+		//current node has children
+			//if value less than current node & currentnode has left child
+				//move to the left node
+			//if value more than current node & currentnode has right child
+				//move to the right node
+		//only other possibility is node has no child
+			//return new null node
+			
+		
+	}
+	//------------------------------------------------------MINOR RESTRUCTURING REQUIRED------------------------------------------------------//
 };
 

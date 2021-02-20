@@ -24,7 +24,9 @@ public:
 		} //const;
 	};
 	//constructor sets root value to null
-	TreenODE();
+	TreenODE() {
+		root = nullptr;
+	}
 	~TreenODE();
 
 	//search binary tree for node with specified value
@@ -52,7 +54,7 @@ public:
 	//insert node into tree
 	void insert(const T& value) {
 		//search for node
-		Node* temp = search(value, root);
+		Node* temp = privSearch(value, root);
 		//if node exsists
 		if (temp->data == value)
 			//do nothing
@@ -68,7 +70,7 @@ public:
 
 	void remove(const T& value) {
 		//search for specified node using given value will be reffered to as target node
-		Node* temp = search(value);
+		Node* temp = privSearch(value, root);
 		//if value cannot be found
 		if (temp->data == nullptr)
 			//return that specified node or that it dosnt exsist or do nothing idfk
@@ -141,12 +143,32 @@ private:
 			return temp;
 		}
 		//current node has children
-			//if value less than current node & currentnode has left child
-				//move to the left node
-			//if value more than current node & currentnode has right child
-				//move to the right node
+		//nod only has left
+		else if (root->hasLeft() && root->hasRight() = false) {
+			//move to the left node
+			privSearch(value, temp->left);
+		}
+		//node only has right child
+		else if (root->hasRight()&& root->hasLeft() = false){
+			//move to the right node
+			privSearch(value, temp->right);
+		}
+		//node has 2 children
+		else if (root->hasRight() && root->hasLeft()) {
+			//if value is less than root value
+			if (value < root->data)
+				//move left
+				privSearch(value, temp->left);
+			//else
+			else
+				//move right
+				privSearch(value, temp->left);
+		}
 		//only other possibility is node has no child
+		else
 			//return new null node
+			return nullptr;
+		
 			
 		
 	}

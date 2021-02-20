@@ -6,20 +6,18 @@ int main()
 	TreeNode<int> testTree;
 
 	//test insert -works
-	testTree.insert(25);
 	testTree.insert(10);
-	testTree.insert(56);
-	testTree.insert(30);
-	testTree.insert(74);
+	testTree.insert(5);
+	testTree.insert(7);
 	testTree.insert(15);
-	testTree.insert(4);
-	testTree.insert(29);
-	testTree.insert(31);
-	testTree.insert(6);
-	//test search
+	testTree.insert(12);
+	testTree.insert(17);
+	testTree.insert(14);
+	
+	//test search-works
 	std::cout << testTree.search(6) << std::endl;
 	std::cout << testTree.search(1000) << std::endl;
-	//test remove
-	testTree.remove(1000);
+	//test remove-works
+	testTree.remove(14);
 	return 0;
 }

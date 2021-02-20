@@ -25,7 +25,8 @@ public:
 	};
 	//constructor sets root value to null
 	TreeNode() {
-		
+		root = nullptr;
+
 	}
 	~TreeNode() {
 		destroyRecursive(root);
@@ -77,7 +78,10 @@ public:
 			temp->left = nullptr;
 			temp->right = nullptr;
 			root = temp;
+
 		}
+	
+		
 	}
 
 	void remove(const T& value) {
@@ -88,7 +92,7 @@ public:
 			//return that specified node or that it dosnt exsist or do nothing idfk
 			return;
 		//if node has no children
-		else if (temp->hasLeft() != true && temp->hasRight() == false) {
+		else if (temp->hasLeft() == false && temp->hasRight() == false) {
 			//set parent nodes pointer to null
 			if (temp->parent->right == temp)
 				temp->parent->right = nullptr;
@@ -98,17 +102,37 @@ public:
 		//else if node to be deleated has one child
 		//if only left child
 		else if (temp->hasLeft() == true && temp->hasRight() == false) {
+			//if temp is on its parents left
+			if (temp->data < temp->parent->data) {
+				//put temps child on the left
+				temp->parent->left = temp->left;
+				temp->left->parent = temp->parent;
+			}
+			//if on parents right
+			if (temp->data > temp->parent->data) {
+				//put temps child on the right
+				temp->parent->right = temp->left;
+				temp->left->parent = temp->parent;
+			}
 			//change targets parent pointer to point to child
-			temp->left->parent = temp->parent;
-			temp->parent->left = temp->left;
 			//delete target node
 			delete temp;
 		}
 		//if only right child
-		else if(temp->hasRight() && temp->hasRight() == false){
-			temp->right->parent = temp->parent;
-			temp->parent->right = temp->right;
-
+		else if(temp->hasRight() && temp->hasLeft() == false){
+			//if temp is on its parents left
+			if (temp->data < temp->parent->data) {
+				//put temps child on its parents left
+				temp->parent->left = temp->right;
+				temp->right->parent = temp->parent;
+			}
+			//if temp is on it's parents right
+			else if (temp->data > temp->parent->data) {
+				//put its child on the parents right
+				temp->parent->right = temp->right;
+				temp->right->parent = temp->parent;
+			}
+			//delete temp
 			delete temp;
 		}
 
@@ -116,29 +140,27 @@ public:
 		else
 		{
 			//find the value on the tree greater than the one we want to remove
-			Node* toDelete = temp;
-			//step right once
-			temp = temp->right;
+			//store a reference to the node you want to delete
+			Node* target = temp;
+			//step right once			temp = temp->right;
 			//step left as many times as possible to get temp to be final node
-			while (temp->hasLeft()) 
-			{
+			while (temp->hasLeft())
 				temp = temp->left;
-			}
 			//copy value of the final node to target node
-			temp->data = toDelete->data;
+			target->data = temp->data;
 			//if final node has a child(should only be able to have one)
-			if (temp->hasRight())
-			{
-				//change final node's parent pointer to point to final nodes child
-				//should only have right
+			if (temp->hasRight()) {
+				//change final node's parent to point to the final nodes child
+				//will point to left since it came from the left
+				//fianl node will have a right child
 				temp->parent->left = temp->right;
+				//change child  to point to final nodes parent
 				temp->right->parent = temp->parent;
 			}
 			//else the node has no child to take care of
-			else
-			{
-				temp->parent->left = toDelete->left;
-			}
+			//need to change parents left pointer to point to null
+			else temp->parent->left = nullptr;
+			//delete temp
 			delete temp;
 		}
 
@@ -151,8 +173,7 @@ private:
 
 	//searches tree for specified value starting at given node
 	Node* privSearch(const T& value, Node* node){
-		node;
-			//if node is current node
+		//if node is current node
 		if (node->data == value) {
 			return node;
 		}
@@ -199,7 +220,7 @@ private:
 		if (boom) {
 			destroyRecursive(boom->left);
 			destroyRecursive(boom->right);
-			delete boom;
+			boom = nullptr;
 		}
 	}
 };

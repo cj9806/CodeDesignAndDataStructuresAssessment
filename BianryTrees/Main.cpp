@@ -19,5 +19,6 @@ int main()
 	std::cout << testTree.search(1000) << std::endl;
 	//test remove-works
 	testTree.remove(14);
+	std::cin;
 	return 0;
 }
